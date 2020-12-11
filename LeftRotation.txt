@@ -10,57 +10,44 @@ import java.util.stream.*;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-class Result {
-
-    /*
-     * Complete the 'rotateLeft' function below.
-     *
-     * The function is expected to return an INTEGER_ARRAY.
-     * The function accepts following parameters:
-     *  1. INTEGER d
-     *  2. INTEGER_ARRAY arr
-     */
-
-    public static List<Integer> rotateLeft(int d, List<Integer> arr) {
-        int n = arr.size();
-        List<Integer> rotArray = new ArrayList<Integer>();  
-
-        for (int oldIndex = 0; oldIndex < n; oldIndex++) {
-            int newIndex = (oldIndex + n - d) % n;
-            rotArray.set(newIndex, arr.get(oldIndex));
-        }
-
-        return rotArray;
-
-    }
-
-}
-
 public class Solution {
-    public static void main(String[] args) throws IOException {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
-
-        String[] firstMultipleInput = bufferedReader.readLine().replaceAll("\\s+$", "").split(" ");
-
-        int n = Integer.parseInt(firstMultipleInput[0]);
-
-        int d = Integer.parseInt(firstMultipleInput[1]);
-
-        List<Integer> arr = Stream.of(bufferedReader.readLine().replaceAll("\\s+$", "").split(" "))
-            .map(Integer::parseInt)
-            .collect(toList());
-
-        List<Integer> result = Result.rotateLeft(d, arr);
-
-        bufferedWriter.write(
-            result.stream()
-                .map(Object::toString)
-                .collect(joining(" "))
-            + "\n"
-        );
-
-        bufferedReader.close();
-        bufferedWriter.close();
+    public static void main(String[] args) {
+        /* Save input */
+        Scanner scan = new Scanner(System.in);
+        int size         = scan.nextInt();
+        int numRotations = scan.nextInt();
+        int array[] = new int[size];
+        for (int i = 0; i < size; i++) {
+            array[i] = scan.nextInt();
+        }
+        scan.close();
+        
+        /* Rotate array (in place) using 3 reverse operations */
+        numRotations %= size; // to account for numRotations > size
+        int rotationSpot = size - 1 - numRotations;
+        reverse(array, 0, size - 1);
+        reverse(array, 0, rotationSpot);
+        reverse(array, rotationSpot + 1, size - 1);
+        
+        /* Print rotated array */
+        for (int i = 0; i < size; i++) {
+            System.out.print(array[i] + " ");
+        }
+    }
+    
+    /* Reverses array from "start" to "end" inclusive */
+    private static void reverse(int[] array, int start, int end) {
+        if (array == null || start < 0 || start >= array.length || end < 0 || end >= array.length) {
+            return;
+        }
+        while (start < end) {
+            swap(array, start++, end--);
+        }
+    }
+    
+    private static void swap(int [] array, int i, int j) {
+        int temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
     }
 }
