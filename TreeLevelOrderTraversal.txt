@@ -1,0 +1,43 @@
+import java.util.*;
+import java.io.*;
+
+class Node {
+    Node left;
+    Node right;
+    int data;
+    
+    Node(int data) {
+        this.data = data;
+        left = null;
+        right = null;
+    }
+}
+
+class Solution {
+
+	/* 
+    
+    class Node 
+    	int data;
+    	Node left;
+    	Node right;
+	*/
+	public static void levelOrder(Node root) {
+        ArrayDeque<Node> deque = new ArrayDeque(); // use deque as a queue
+        if (root != null) {
+            deque.add(root);
+        }
+        while (!deque.isEmpty()) {
+            Node n = deque.remove();
+            System.out.print(n.data + " ");
+            if (n.left != null) {
+                deque.add(n.left);
+            }
+            if (n.right != null) {
+                deque.add(n.right);
+            }
+        }
+      
+    }
+
+	public static Node insert(Node root, int data) {
